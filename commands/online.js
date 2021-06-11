@@ -2,33 +2,36 @@
 const util = require('minecraft-server-util');
 //load token
 const config = require('../config/config.json');
-//Discord.js lib
-const { MessageEmbed } = require('discord.js');
-const { default: messageHandler } = require('wokcommands/dist/message-handler');
+const Discord = require("discord.js");
 
+module.exports.run = async (bot, message, args, prefix) => {
 
-module.exports = {
-    slash: true,
-    testOnly: true,
-    description: 'List all players, who are currently online',
-    callback: () => {
-        util.status(config.minecraft.serverip, {port: 25565}).then((response) =>{
-            console.log(response)
-            const player = response.samplePlayers;
-            const online = response.onlinePlayers;
+    util.status(config.minecraft.serverip, {port: 25565})
+        .then((response) =>{
+            let online = response.onlinePlayers
 
-        });
+            let desc = '';
+            response.samplePlayers.forEach(player => {
+                desc += `${player.name}\n`
+            });
+            
+            const embed = new Discord.MessageEmbed()
+            .setColor("#FF2AA2")
+            .addFields(
+                    { name: 'Currently Online:', value: `${online} / 20` },
+                    { name: `Players:`, value:`${desc}`}
+                    )
         
-    const embed = new MessageEmbed()
-.setColor('#79014A')
-.setTitle('Online Players')
-.addFields (
-    {name: 'Playercount:', value: `${online}`},
-    {name: 'Online Players:', value: response.samplePlayers},
-    {name: 'test', value: 'test'})
+            .setTimestamp()
+            message.channel.send(embed);
+            console.log (`[Discord] ${message.author.tag} used Command: Online`)
+        });
 
 
-    return embed
-    },
 
+
+}
+
+module.exports.help = {
+    name: "online"
 }
