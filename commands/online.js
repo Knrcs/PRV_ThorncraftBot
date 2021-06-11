@@ -1,17 +1,22 @@
 //load minecraft util%
 const util = require('minecraft-server-util');
+//load token
+const config = require('../config/config.json');
 const Discord = require("discord.js");
 
 module.exports.run = async (bot, message, args, prefix) => {
 
-    util.status(`209.182.108.97`, {port: 25565})
+    util.status(config.minecraft.serverip, {port: 25565})
         .then((response) =>{
             let online = response.onlinePlayers
 
             let desc = '';
-            response.samplePlayers.forEach(player => {
-                desc += `${player.name}\n`
-            });
+            if(!desc){ desc = "Nobody is online"}
+            else if(desc){
+                response.samplePlayers.forEach(player => {
+                    desc += `${player.name}\n`
+                });
+            }
             
             const embed = new Discord.MessageEmbed()
             .setColor("#FF2AA2")
