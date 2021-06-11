@@ -11,12 +11,14 @@ module.exports.run = async (bot, message, args, prefix) => {
             let online = response.onlinePlayers
 
             let desc = '';
-            if(!desc){ desc = "Nobody is online"}
-            else if(desc){
+            if(response.samplePlayers===null){ desc = "Nobody is online :<"}
+            else {
+                console.log(response.samplePlayers)
                 response.samplePlayers.forEach(player => {
                     desc += `${player.name}\n`
                 });
             }
+
             
             const embed = new Discord.MessageEmbed()
             .setColor("#FF2AA2")
