@@ -1,12 +1,10 @@
 //load minecraft util%
 const util = require('minecraft-server-util');
-//load token
-const config = require('../config/config.json');
 const Discord = require("discord.js");
 
 module.exports.run = async (bot, message, args, prefix) => {
 
-    util.status(config.minecraft.serverip, {port: 25565})
+    util.status(`209.182.108.97`, {port: 25565})
         .then((response) =>{
             let online = response.onlinePlayers
 
